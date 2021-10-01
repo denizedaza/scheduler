@@ -1,26 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import DayList from "./DayList";
 import Appointment from "./Appointment";
 
 import "components/Application.scss";
 
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
+// "GET_DAYS":         http://localhost:8001/api/days,
+// "GET_APPOINTMENTS": http://localhost:8001/api/appointments,
+// "GET_INTERVIEWERS": http://localhost:8001/api/interviewers,
 
 const appointments = [
   {
@@ -79,7 +66,7 @@ const appointments = [
 
 const scheduledAppointemnts = appointments.map(apptsObj => {
   return (
-    <Appointment 
+    <Appointment
       key={apptsObj.id}
       {...apptsObj}
     />
@@ -87,6 +74,18 @@ const scheduledAppointemnts = appointments.map(apptsObj => {
 })
 
 export default function Application(props) {
+  const [days, setDays] = useState([]);
+
+  useEffect(() => {
+    axios.get('/api/days')
+    .then(response => {
+      setDays([response.data])
+      const rawObj = JSON.stringify(response.data, null, 2)
+      const scheduleData = rawObj.map(obj => obj.name)
+      console.log(scheduleData)
+    });
+  }, []);
+
   const [currentDay, setCurrentDay] = useState('Monday');
   return (
     <main className="layout">
@@ -98,7 +97,7 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
-          <DayList 
+          <DayList
             days={days}
             day={currentDay}
             setDay={setCurrentDay}
@@ -111,7 +110,7 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        { scheduledAppointemnts }
+        {scheduledAppointemnts}
         <Appointment key="last" time="5pm" />
       </section>
     </main>
