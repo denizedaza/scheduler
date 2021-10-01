@@ -38,21 +38,21 @@ const appointments = [
       }
     }
   },
-  {
-    id: 4,
-    time: "2pm",
-    interview: {
-      student: "Veronica Mars",
-      interviewer: {
-        id: 1,
-        name: "Tori Malcom",
-        avatar: "https://i.imgur.com/Nmx0Qxo.png",
-      }
-    }
-  },
+  // {
+  //   id: 4,
+  //   time: "4pm",
+  //   interview: {
+  //     student: "Veronica Mars",
+  //     interviewer: {
+  //       id: 1,
+  //       name: "Tori Malcom",
+  //       avatar: "https://i.imgur.com/Nmx0Qxo.png",
+  //     }
+  //   }
+  // },
   {
     id: 5,
-    time: "12pm",
+    time: "2:30pm",
     interview: {
       student: "Patrick Star",
       interviewer: {
@@ -74,19 +74,23 @@ const scheduledAppointemnts = appointments.map(apptsObj => {
 })
 
 export default function Application(props) {
-  const [days, setDays] = useState([]);
+  const [state, setState] = useState({
+    day: "Monday",
+    days: [],
+    appointments: {}
+  })
+  const setDay = day => setState({ ...state, day });
+
+  const setDays = (days) => {
+    setState(prev => ({ ...prev, days }))
+  }
 
   useEffect(() => {
-    axios.get('/api/days')
-    .then(response => {
-      setDays([response.data])
-      const rawObj = JSON.stringify(response.data, null, 2)
-      const scheduleData = rawObj.map(obj => obj.name)
-      console.log(scheduleData)
-    });
+    axios.get("/api/days")
+    .then(response => 
+      setDays(response.data));
   }, []);
 
-  const [currentDay, setCurrentDay] = useState('Monday');
   return (
     <main className="layout">
       <section className="sidebar">
@@ -98,9 +102,9 @@ export default function Application(props) {
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
           <DayList
-            days={days}
-            day={currentDay}
-            setDay={setCurrentDay}
+            days={state.days}
+            day={state.day}
+            setDay={setDay}
           />
         </nav>
         <img
