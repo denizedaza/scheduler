@@ -1,6 +1,6 @@
 import React from "react";
 
-export function getAppointmentsForDay(state, day) {
+function getAppointmentsForDay(state, day) {
   const dayApptsArray = state.days;
   const matchingDaysArr = dayApptsArray.filter(dayObj => {
     return dayObj.name === day
@@ -16,3 +16,16 @@ export function getAppointmentsForDay(state, day) {
 
   return appts;
 }
+
+function getInterview(state, interview) {
+  if (!interview) {
+    return null;
+  }
+
+  return {
+    student: interview.student,
+    interviewer: state.interviewers[interview.interviewer]
+  }
+}
+
+export { getAppointmentsForDay , getInterview }
