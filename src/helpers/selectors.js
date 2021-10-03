@@ -1,12 +1,11 @@
 import React from "react";
 
 function getAppointmentsForDay(state, day) {
-  const dayApptsArray = state.days;
-  const matchingDaysArr = dayApptsArray.filter(dayObj => {
+  const matchingDaysArr = state.days.filter(dayObj => {
     return dayObj.name === day
   })
 
-  if (!dayApptsArray || matchingDaysArr.length === 0) {
+  if (!state.days || matchingDaysArr.length === 0) {
     return [];
   }
 
@@ -28,4 +27,19 @@ function getInterview(state, interview) {
   }
 }
 
-export { getAppointmentsForDay , getInterview }
+function getInterviewersForDay(state, day) {
+  const matchingDaysArr = state.days.filter(dayObj => {
+    return dayObj.name === day
+  })
+
+  if (!state.days || matchingDaysArr.length === 0) {
+    return [];
+  }
+  const appts = matchingDaysArr[0].interviewers.map((appt) => {
+    return state.interviewers[appt];
+  })
+
+  return appts;
+}
+
+export { getAppointmentsForDay , getInterview, getInterviewersForDay }
