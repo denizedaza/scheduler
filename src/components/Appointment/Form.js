@@ -40,7 +40,7 @@ export default function Form(props) {
       <section className="appointment__card-right">
         <section className="appointment__actions">
           <Button danger onClick={cancel}>Cancel</Button>
-          <Button confirm onSubmit={(event) => event.preventDefault()} onClick={onSave}>Save</Button>
+          <Button confirm onSubmit={(event) => event.preventDefault()} onClick={ () => onSave(currentName, currentInterviewer)}>Save</Button>
         </section>
       </section>
     </main>
