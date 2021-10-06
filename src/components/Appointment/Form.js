@@ -27,6 +27,7 @@ export default function Form(props) {
       return;
     }
   
+    setError("");
     onSave(currentName, currentInterviewer);
   }
 
