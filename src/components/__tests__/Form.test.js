@@ -11,12 +11,12 @@ describe("Form", () => {
     {
       id: 1,
       name: "Sylvia Palmer",
-      avatar: "https://i.imgur.com/LpaY82x.png"
-    }
+      avatar: "https://i.imgur.com/LpaY82x.png",
+    },
   ];
 
   it("renders without student name if not provided", () => {
-    const { getByPlaceholderText } = render (
+    const { getByPlaceholderText } = render(
       <Form interviewers={interviewers} />
     );
 
@@ -31,12 +31,11 @@ describe("Form", () => {
   });
 
   it("validates that the student name is not blank", () => {
-
     const onSave = jest.fn();
 
     const { getByText } = render(
       <Form interviewers={interviewers} onSave={onSave} />
-    )
+    );
 
     /* 3. Click the save button */
     fireEvent.click(getByText("Save"));
@@ -50,21 +49,24 @@ describe("Form", () => {
     const { getByText, getByPlaceholderText, queryByText } = render(
       <Form interviewers={interviewers} onSave={onSave} value={1} />
     );
-  
+
     fireEvent.click(getByText("Save"));
-  
-    expect((getByText(/student name cannot be blank/i)) || getByText(/please select an interviewer/i)).toBeInTheDocument();
+
+    expect(
+      getByText(/student name cannot be blank/i) ||
+        getByText(/please select an interviewer/i)
+    ).toBeInTheDocument();
     expect(onSave).not.toHaveBeenCalled();
-  
+
     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
-      target: { value: "Lydia Miller-Jones" }
+      target: { value: "Lydia Miller-Jones" },
     });
-  
+
     fireEvent.click(getByText("Save"));
-  
+
     expect(queryByText(/student name cannot be blank/i)).toBeNull();
     expect(queryByText(/please select an interviewer/i)).toBeNull();
-  
+
     expect(onSave).toHaveBeenCalledTimes(1);
     expect(onSave).toHaveBeenCalledWith("Lydia Miller-Jones", 1);
   });
@@ -79,19 +81,19 @@ describe("Form", () => {
         onCancel={onCancel}
       />
     );
-  
+
     fireEvent.click(getByText("Save"));
-  
+
     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
-      target: { value: "Lydia Miller-Jones" }
+      target: { value: "Lydia Miller-Jones" },
     });
-  
+
     fireEvent.click(getByText("Cancel"));
-  
+
     expect(queryByText(/student name cannot be blank/i)).toBeNull();
-  
+
     expect(getByPlaceholderText("Enter Student Name")).toHaveValue("");
-  
+
     expect(onCancel).toHaveBeenCalledTimes(1);
   });
 });

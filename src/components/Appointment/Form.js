@@ -12,14 +12,14 @@ export default function Form(props) {
   const [error, setError] = useState("");
 
   const reset = () => {
-    setName("")
-    setInterviewer(null)
-  }
+    setName("");
+    setInterviewer(null);
+  };
 
   const cancel = () => {
     reset();
     onCancel();
-  }
+  };
 
   function validate() {
     if (currentName === "") {
@@ -30,7 +30,7 @@ export default function Form(props) {
       setError("Please select an interviewer");
       return;
     }
-  
+
     setError("");
     onSave(currentName, currentInterviewer);
   }
@@ -45,40 +45,34 @@ export default function Form(props) {
             type="text"
             placeholder="Enter Student Name"
             data-testid="student-name-input"
-          /*
+            /*
             This must be a controlled component
           */
             value={currentName}
             onChange={(event) => setName(event.target.value)}
           />
-        <section className="appointment__validation">{error}</section>  
+          <section className="appointment__validation">{error}</section>
         </form>
-        <InterviewerList interviewers={interviewers} value={currentInterviewer} onChange={(event) => setInterviewer(event)} />
+        <InterviewerList
+          interviewers={interviewers}
+          value={currentInterviewer}
+          onChange={(event) => setInterviewer(event)}
+        />
       </section>
       <section className="appointment__card-right">
         <section className="appointment__actions">
-          <Button danger onClick={cancel}>Cancel</Button>
-          <Button confirm onSubmit={(event) => event.preventDefault()} onClick={ () => validate()}>Save</Button>
+          <Button danger onClick={cancel}>
+            Cancel
+          </Button>
+          <Button
+            confirm
+            onSubmit={(event) => event.preventDefault()}
+            onClick={() => validate()}
+          >
+            Save
+          </Button>
         </section>
       </section>
     </main>
   );
 }
-
-/*
-
-As part of our Edit story, the Form component should take the following props:
-
-name:  String
-interviewers:  Array
-interviewer:  Number
-onSave:  Function
-onCancel:  Function
-
-As part of our Create story, the Form component should take the following props:
-
-interviewers:  Array
-onSave:  Function
-onCancel:  Function
-
-*/
