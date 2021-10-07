@@ -6,6 +6,7 @@ import Empty from "./Empty";
 import Form from "./Form";
 import Status from "./Status";
 import Confirm from "./Confirm";
+import Error from "./Error";
 
 import useVisualMode from "hooks/useVisualMode";
 
@@ -52,6 +53,10 @@ export default function Appointment(props) {
     transition(EDIT);
   };
 
+  const onClose= () => {
+    back();
+  };
+
   return (
     <article className="appointment">
       <Header time={props.time} />
@@ -85,6 +90,8 @@ export default function Appointment(props) {
           name={props.interview.student}
         />
       )}
+      {mode === ERROR_DELETE && <Error onClose={onClose} message="Could not cancel appointment"/>}
+      {mode === ERROR_SAVE && <Error onClose={onClose} message="There was a problem saving appointment"/>}
     </article>
   );
 }
